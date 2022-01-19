@@ -1,3 +1,4 @@
+import { idbPromise } from "../../utils/helpers";
 import React from "react";
 import { Link } from "react-router-dom";
 import { pluralize } from "../../utils/helpers"
@@ -25,11 +26,16 @@ function ProductItem(item) {
         _id: _id,
         purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
       });
+      idbPromise('cart', 'put', {
+        ...itemInCart,
+        purchaseQuantity: parseInt(itemInCart.purchaseQuantity) + 1
+      });
     } else {
       dispatch({
         type: ADD_TO_CART,
         product: { ...item, purchaseQuantity: 1 }
       });
+      idbPromise('cart', 'put', { ...item, purchaseQuantity: 1 });
     }
   }
 
